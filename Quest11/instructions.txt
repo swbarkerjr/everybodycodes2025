@@ -1,0 +1,201 @@
+ At the start of the flight, the ducks group randomly in columns. The number of scout ducks in the flock is always perfectly divisible by the number of columns. Each column, initially may contain a different number of ducks. Then, the entire flock performs a series of exchange rounds until every column has the same number of ducks. Their method is highly inefficient, but don’t even try to explain that to them. Scout ducks value it as a time-honoured tradition that also entertains them during flight.
+The whole procedure consists of two phases.
+In the first phase, each column of ducks checks whether the next column has fewer birds. If so, one duck moves to the next column. In a single round of this phase, the first column checks the second, then the second checks the third, and so on. After the last pair of columns is checked, the next round begins with the first column comparing with the second again. This phase continues until no more ducks can move.
+In the second phase, each column of ducks checks whether the next column has more birds. If so, one duck moves from the column with more birds to the one with fewer. This phase also continues until no more moves are possible, and it never goes back to the first phase.
+Unbelievably, at the end of this process, the ducks are perfectly balanced across all columns.
+It's best if I show you an example from the scout duck manual. It contains a setup with an initial count of ducks per column ( your notes ), and the flock's checksum after each round. The flock checksum is the sum of the number of ducks in each column, each multiplied by the column number, starting from 1. Try simulating the process and calculate the checksum of the flock after
+
+ 10 
+
+rounds.
+Example based on the following notes:
+
+9
+1
+1
+4
+9
+6
+
+The example above can be visualised as columns of ducks, numbered from 1 to 6. Each duck is represented as a
+
+ * 
+
+.
+
+ 1 2 3 4 5 6 
+ * * * * * *
+ *     * * *
+ *     * * *
+ *     * * *
+ *       * *
+ *       * *
+ *       *
+ *       *
+ *       *
+
+Below is a diagram of the first round of the first phase with square brackets
+
+ [] 
+
+showing which columns were compared. The moved duck is additionally marked as
+
+ (*) 
+
+.
+
+ Step 1 [1,2]    Step 2 [2,3]    Step 3 [3,4]    Step 4 [4,5]    Step 5 [5,6]
+  1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6
+  * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *
+  *(*)  * * *     *  (*)* * *     *   * * * *     *   * * * *     *   * * * *
+  *     * * *     *     * * *     *     * * *     *     * * *     *     * * *
+  *     * * *     *     * * *     *     * * *     *     * * *     *     * * *
+  *       * *     *       * *     *       * *     *       * *     *       * *
+  *       * *     *       * *     *       * *     *       * *     *       * *
+  *       *       *       *       *       *       *       *       *       *(*)
+  *       *       *       *       *       *       *       *       *       *
+          *               *               *               *
+
+Not every step resulted in a duck moving. In steps 3 and 4, the target columns had more birds, so no movement happened. The number of birds at the end of this round (per column) is:
+
+ 8 1 2 4 8 7 
+
+.
+Running simulations for all the rounds of the first phase gives:
+
+ Round      Birds in columns      Flock checksum 
+   0           9 1 1 4 9 6              111 = 1 * 9 + 2 * 1 + 3 * 1 + 4 * 4 + 5 * 9 + 6 * 6 
+   1           8 1 2 4 8 7              114 = 1 * 8 + 2 * 1 + 3 * 2 + 4 * 4 + 5 * 8 + 6 * 7
+   2           7 2 2 4 7 8              116 = 1 * 7 + 2 * 2 + 3 * 2 + 4 * 4 + 5 * 7 + 6 * 8
+   3           6 2 3 4 7 8              118 = 1 * 6 + 2 * 2 + 3 * 3 + 4 * 4 + 5 * 7 + 6 * 8
+   4           5 3 3 4 7 8              119 = 1 * 5 + 2 * 3 + 3 * 3 + 4 * 4 + 5 * 7 + 6 * 8
+   5           4 3 4 4 7 8              121 = 1 * 4 + 2 * 3 + 3 * 4 + 4 * 4 + 5 * 7 + 6 * 8
+   6           3 4 4 4 7 8              122 = 1 * 3 + 2 * 4 + 3 * 4 + 4 * 4 + 5 * 7 + 6 * 8
+
+After round
+
+ 6 
+
+, no more moves can be made so the second phase begins.
+The first round of the second phase looks like this:
+
+After round 6   Step 1 [1,2]    Step 2 [2,3]    Step 3 [3,4]    Step 4 [4,5]    Step 5 [5,6]
+ 1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6     1 2 3 4 5 6
+ * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *
+ * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *
+ * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *     * * * * * *
+   * * * * *    (*)  * * * *     *(*)  * * *     * *(*)  * *     * * *(*)* *     * * * * * *
+         * *             * *             * *             * *             * *             * *
+         * *             * *             * *             * *             * *             * *
+         * *             * *             * *             * *               *            (*)*
+           *               *               *               *               *
+
+At the end of this round, the number of ducks in each column is:
+
+ 4 4 4 4 7 7 
+
+.
+Running simulations for all the rounds of the second phase gives:
+
+ Round      Birds in columns      Flock checksum
+   6           3 4 4 4 7 8              122
+   7           4 4 4 4 7 7              117
+   8           4 4 4 5 7 6              115
+   9           4 4 5 5 6 6              113
+  10           4 5 5 5 6 5              109
+  11           5 5 5 5 5 5              105
+
+To calculate the flock checksum after
+
+ 10 
+
+rounds, multiply the number of ducks in each column by the column number, then sum the results:
+1 * 4 + 2 * 5 + 3 * 5 + 4 * 5 + 5 * 6 + 6 * 5 =
+
+ 109 
+
+Part 1 Answer = 271 - correct
+
+-------------------------------------------------------------------------------------------
+
+
+Part II
+To ensure everything is understood, let’s review another example from the scout duck manual. For the given initial setup ( your notes ), find the number of rounds after which the flock is balanced.
+Example based on the following notes:
+
+9
+1
+1
+4
+9
+6
+
+For the Part I example, the flock is balanced after just
+
+ 11 
+
+rounds.
+ 
+
+805
+706
+179
+48
+158
+150
+232
+885
+598
+524
+423
+
+For a slightly more complex example, the columns equalise after
+
+ 1579 
+
+rounds.
+The simulation for some of the rounds looks as follows:
+
+ Round                   Birds in columns
+    0       805 706 179  48 158 150 232 885 598 524 423
+    1       804 706 179  49 157 151 232 884 598 524 424
+   10       795 706 179  58 154 154 232 875 598 524 433
+   20       785 706 179  68 154 154 232 865 598 524 443
+   30       775 706 179  78 154 154 232 855 598 524 453
+   40       765 706 179  88 154 154 232 845 598 524 463
+   50       755 706 179  98 154 154 232 835 598 524 473
+   60       745 706 179 108 154 154 232 825 598 524 483
+   70       735 706 179 118 154 154 232 815 598 524 493
+   80       725 706 179 128 154 154 232 805 598 524 503
+   90       715 706 179 138 154 154 232 795 598 524 513
+  100       706 705 179 148 154 154 232 785 598 524 523
+  200       656 655 183 184 184 184 232 685 598 573 574
+  300       606 605 208 209 209 209 232 607 607 608 608
+  400       556 555 233 233 233 234 234 607 607 608 608
+  500       506 505 253 253 253 254 254 607 607 608 608
+  600       456 455 273 273 273 274 274 607 607 608 608
+  700       406 405 293 293 293 294 294 607 607 608 608
+  800       356 355 313 313 313 314 314 607 607 608 608
+  900       331 331 331 331 331 331 331 598 598 598 597
+ 1000       345 345 345 345 345 346 346 573 573 573 572
+ 1100       359 359 359 360 360 360 360 548 548 548 547
+ 1200       373 374 374 374 374 374 374 523 523 523 522
+ 1300       388 388 388 388 388 388 389 498 498 498 497
+ 1400       402 402 402 402 403 403 403 473 473 473 472
+ 1500       416 416 417 417 417 417 417 448 448 448 447
+ 1579       428 428 428 428 428 428 428 428 428 428 428
+
+After how many rounds is the flock balanced across all columns?
+
+Part 2 answer = 3984738 - correct
+
+---------------------------------------------------------------------------
+
+
+Part III
+You’ve managed to join the scouts and are flying with them, following all the rules. Along the way, you learn that the whole switching procedure isn't just for entertainment. Visibility during high-altitude flights can be limited, and it's easy to accidentally miss the travel destination.
+The initial setup isn’t random at all, as the Grand Bytefather had told you. Everything is arranged so that the journey lasts exactly as long as it takes to balance the number of birds in all columns. Thanks to this, no matter the visibility or altitude, the flock knows when it reaches its destination.
+You look around the flock to count the current number of birds in each column ( your notes ). Luckily, you've practised simulating the whole process in Part II, so you can easily calculate the number of rounds left for the flock to be perfectly balanced.
+After how many rounds is the flock balanced across all columns?
+
+Part 3 answer = 130353341887463 - correct (missed first time by 1 - 130353341887464 because I double counted phase1 when phase1 was already completed).
