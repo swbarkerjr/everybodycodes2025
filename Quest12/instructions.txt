@@ -1,0 +1,115 @@
+ There are three clearings with the barrels arranged in rows and columns at fixed distances, forming grids. You note down the layout of the barrels in the clearing closest to you ( your notes ). You mark each barrel with a number corresponding to its size. The smallest barrels are marked as 0, and the largest as 9.
+
+Your plan is very simple. You want to trigger a chain reaction by destroying just one barrel located in the top-left corner of the grid. You assume that each barrel, if ignited, can set fire to adjacent barrels on the left, right, top, and bottom that are smaller or the same size as the ignited one. The clearing is fairly small, so you can quickly verify your theory. You clench your beak again and aim your fireball at the chosen barrel.
+Example based on the following notes:
+
+989601
+857782
+746543
+766789
+
+The ignited barrel in the top-left corner destroys two neighbouring barrels, as it is larger.
+
+989601
+857782
+746543
+766789
+
+Barrels ignited in this way destroy adjacent barrels of the same or smaller size.
+
+989601     989601     989601     989601     989601     989601     989601          989601
+857782     857782     857782     857782     857782     857782     857782          857782
+746543     746543     746543     746543     746543     746543     746543   ...    746543
+766789     766789     766789     766789     766789     766789     766789          766789
+
+When the entire chain reaction comes to an end,
+
+ 16 
+
+barrels have been destroyed.
+How many barrels can the entire chain reaction destroy?
+
+Part 1 answer = 240 - correct
+
+===================================================================================
+Part II
+Everything worked just as you had predicted. What’s more, the remaining barrels were so heated by the explosions that after a few moments they ignited on their own, allowing you to destroy the entire first stockpile! Your strategy works!
+The next clearing is slightly larger ( your notes ), but the rules remain the same as before. To reach the last stockpile of barrels, you must fly directly over the second one, along the diagonal, so you decide to try firing two fireballs.
+The first target is the barrel in the top-left corner, just like before. The second target is the opposite barrel, in the bottom-right corner. For a better burning effect on the other barrels, you decide to fire both fireballs in such a way that both barrels are ignited at exactly the same moment.
+Example based on the following notes:
+
+9589233445
+9679121695
+8469121876
+8352919876
+7342914327
+7234193437
+6789193538
+6781219648
+5691219769
+5443329859
+
+The barrels ignited simultaneously in the corners trigger the following chain of destruction:
+
+9589233445     9589233445     9589233445     9589233445          9589233445
+9679121695     9679121695     9679121695     9679121695          9679121695
+8469121876     8469121876     8469121876     8469121876          8469121876
+8352919876     8352919876     8352919876     8352919876          8352919876
+7342914327     7342914327     7342914327     7342914327          7342914327
+7234193437     7234193437     7234193437     7234193437    ...   7234193437
+6789193538     6789193538     6789193538     6789193538          6789193538
+6781219648     6781219648     6781219648     6781219648          6781219648
+5691219769     5691219769     5691219769     5691219769          5691219769
+5443329859     5443329859     5443329859     5443329859          5443329859
+
+When the entire chain reaction comes to an end, 58 barrels have been destroyed.
+
+Part2 answer = 5731 - correct
+
+-----------------------------------------------------------------------------------
+
+Part III
+The final barrel stockpile is the largest of them all, so it would be wise to repeat the manoeuvre with several simultaneous fireballs, however, the grid is very large ( your notes ), and you see a dark figure leaving the castle at the head of a group of knights on horseback. Each one carries a powerful crossbow on their back, so you can’t afford to spend too much time on the entire operation.
+You decide to try to ignite the barrels with three simultaneous fireballs this time. But finding the optimal triple feels impossible even for you in such a timely situation. You decide to go with a greedy approach instead:
+
+    Find the barrel that allows you to destroy the most barrels with a single fireball.
+    Find the second barrel that allows you to destroy the most barrels, after the first chain reaction is over.
+    Find the third barrel that allows you to destroy the most barrels, after the second chain reaction is over.
+    Set the three selected barrels on fire simultaneously, and get your feathers out of here!
+
+Example based on the following notes:
+
+5411
+3362
+5235
+3112
+
+The best single strike is setting the barrel with the number [6] on fire. It destroys other barrels as follows:
+
+5411
+3362
+5235
+3112
+
+For the second and the third barrel, you can choose any pair of barrels of size [5]. Overall, the whole chain reaction when three barrels are set on fire simultaneously destroys 14 barrels at most with your greedy approach.
+
+The optimal solution would be setting three [5] barrels on fire simultaneously. With this strategy, only the barrel of size [6] would survive the chain reaction, but this would require much more time and effort to calculate.
+
+
+41951111131882511179
+32112222211518122215
+31223333322115122219
+31234444432147511128
+91223333322176121892
+61112222211166431583
+14661111166111111746
+11111119142122222177
+41222118881233333219
+71222127839122222196
+56111126279711111517
+
+For the second example, when the entire chain reaction comes to an end, 136 barrels are destroyed, and this is the maximum number of barrels with three parallel fireballs in this case, when using the greedy approach.
+
+How many barrels at most can be ultimately destroyed by setting the three barrels chosen with the greedy approach on fire simultaneously?
+
+Part 3 answer 4135 (took 15-20ish minutes to solve, part 1 was horrible, 2 and 3 were quick.)
